@@ -458,7 +458,7 @@ src="https://www.facebook.com/tr?id=899784206515234&ev=PageView&noscript=1"
 
 <!-- URGENCY BAR -->
 <div class="urgency-bar">
-  ⚠ Free Class: <span>Only 47 Spots Left</span> — Join the WhatsApp Group Before It Fills Up
+  ⚠ Free Class: <span>Only <span data-seat-count>47</span> Spots Left</span> — Join the WhatsApp Group Before It Fills Up
 </div>
 
 <!-- HERO -->
@@ -473,7 +473,7 @@ src="https://www.facebook.com/tr?id=899784206515234&ev=PageView&noscript=1"
 
     <div class="seats-counter">
       <span class="seats-dot"></span>
-      <span class="seats-count">47 spots</span> left — group closes when full
+      <span class="seats-count"><span data-seat-count>47</span> spots</span> left — group closes when full
     </div>
 
     <p class="hero-desc">
@@ -657,6 +657,30 @@ src="https://www.facebook.com/tr?id=899784206515234&ev=PageView&noscript=1"
     document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
     document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
   }, 1000);
+
+  const seatCounters = document.querySelectorAll('[data-seat-count]');
+  let seatsLeft = 47;
+  const minimumSeats = 5;
+
+  function renderSeats() {
+    seatCounters.forEach((counter) => {
+      counter.textContent = seatsLeft;
+    });
+  }
+
+  function scheduleSeatDrop() {
+    if (seatsLeft <= minimumSeats) return;
+
+    const delay = (Math.floor(Math.random() * 5) + 1) * 1000;
+    setTimeout(() => {
+      seatsLeft = Math.max(minimumSeats, seatsLeft - 1);
+      renderSeats();
+      scheduleSeatDrop();
+    }, delay);
+  }
+
+  renderSeats();
+  scheduleSeatDrop();
 </script>
 
 </body>
